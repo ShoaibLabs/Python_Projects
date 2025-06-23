@@ -2,16 +2,21 @@ def grading_system():
     while True:
         try:
             total_marks = float(input("Enter total marks: "))
-            print()
+            if total_marks <= 0:
+                print("\033[31mTotal marks cannot be zero or negative\033[0m")
+                print()
+                continue
             break
+
         except ValueError:
             print("\033[31mInvalid value\033[0m")
             print()
     while True:
         try:
+            print()
             obtained_marks = float(input("Enter obtained marks: "))
-            if obtained_marks > total_marks:
-                print("\033[31mObtained marks cannot be higher than total marks\033[0m")
+            if obtained_marks > total_marks or obtained_marks < 0:
+                print("\033[31mObtained marks cannot be higher than total marks or negative\033[0m")
                 print()
                 continue
 
@@ -62,6 +67,7 @@ def grading_system():
             else:
                 print("Your grade is F")
                 print("\033[31mYou have failed the exam!\033[0m")
+            print()
             break
         except ValueError:
             print("\033[31mInvalid value\033[0m")
@@ -69,12 +75,14 @@ def grading_system():
 
 while True:
     grading_system()
-    restart = input("Do you want to restart the program?\ny/n: ").lower()
-    if restart == "y":
-        print("\n")
-        continue
-    elif restart == "n":
-        print("\n\033[35mThank you for using the program!\033[0m")
-        break
-    else:
-        print("\033[33mInvalid input. Please type y or n.\033[0m\n")
+    while True:
+        restart = input("Do you want to restart the program?\ny/n: ").lower()
+        if restart == "y":
+            print("\n")
+            break
+        elif restart == "n":
+            print("\n\033[35mThank you for using the program!\033[0m")
+            exit()
+        else:
+            print("\033[33mInvalid input. Please type y or n.\033[0m\n")
+
