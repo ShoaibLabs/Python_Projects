@@ -3,13 +3,14 @@
 A collection of Python projects organized by difficulty — from beginner to advanced — created to practice and improve programming skills.
 
 ---
-
+``` 
 ## 📁 Structure
 
 python_projects/
 ├── beginner_projects/
 ├── intermediate_projects/
 └── advanced_projects/
+``` 
 
 ---
 
