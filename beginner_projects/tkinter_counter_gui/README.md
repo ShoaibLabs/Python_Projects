@@ -17,8 +17,8 @@ python counter_gui.py
 
 ## 📁 Files
 
-counter_gui.py
-README.md
+- counter_gui.py
+- README.md
 
 ---
 
