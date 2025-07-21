@@ -11,8 +11,9 @@ BACKGROUND_COLOR = '#121212'
 GRID_COLOR = '#1F1F1F'
 WIN_COLOR = '#FFD700'
 BUTTON_COLOR = '#1A1A1A'
-GRID_FONT = ('consolas', 40, 'bold')
-BUTTON_FONT = ('consolas', 10, 'bold')
+LABEL_FONT = ('Consolas', 20, 'bold')
+GRID_FONT = ('Consolas', 40, 'bold')
+BUTTON_FONT = ('Consolas', 10, 'bold')
 
 
 #VARIABLES
@@ -38,7 +39,7 @@ def win_check():
 				label.config(text=f'{winner} won!', fg=WIN_COLOR)
 				board[row][column].config(bg=BACKGROUND_COLOR, fg=WIN_COLOR)
 			game_over = True
-			messagebox.showinfo(title='Tic Tac Tie', message=f'Player {winner} won!')
+			messagebox.showinfo(title='Tic Tac Toe', message=f'Player {winner} won!')
 			restart_game()
 			return
 	#Checking column			
@@ -49,7 +50,7 @@ def win_check():
 				label.config(text=f'{winner} won!', fg=WIN_COLOR)
 				board[row][column].config(bg=BACKGROUND_COLOR, fg=WIN_COLOR)
 			game_over = True
-			messagebox.showinfo(title='Tic Tac Tie', message=f'Player {winner} won!')
+			messagebox.showinfo(title='Tic Tac Toe', message=f'Player {winner} won!')
 			restart_game()
 			return
 	#Checking diagonal \
@@ -59,7 +60,7 @@ def win_check():
 		for diagonal in range(3):
 			board[diagonal][diagonal].config(bg=BACKGROUND_COLOR, fg=WIN_COLOR)
 		game_over = True
-		messagebox.showinfo(title='Tic Tac Tie', message=f'Player {winner} won!')
+		messagebox.showinfo(title='Tic Tac Toe', message=f'Player {winner} won!')
 		restart_game()
 		return	
 	#Checking Diagonal /
@@ -70,18 +71,18 @@ def win_check():
 		board[1][1].config(bg=BACKGROUND_COLOR, fg=WIN_COLOR)
 		board[2][0].config(bg=BACKGROUND_COLOR, fg=WIN_COLOR)
 		game_over = True
-		messagebox.showinfo(title='Tic Tac Tie', message=f'Player {winner} won!')
+		messagebox.showinfo(title='Tic Tac Toe', message=f'Player {winner} won!')
 		restart_game()
 		return
 	#Checking Draw
 	if all(board[r][c]['text'] != '' for r in range(3) for c in range(3)):
 		label.config(text='It\'s a draw!', fg=WIN_COLOR)
 		game_over = True
-		messagebox.showinfo(title='Tic Tac Tie', message='It\'s a draw!')
+		messagebox.showinfo(title='Tic Tac Toe', message='It\'s a draw!')
 		restart_game()
 		return
 
-#Updating grid according to current player
+#X/O in grids
 def place_mark(row, column):
 	global ai_thinking, current_player
 	
@@ -98,6 +99,7 @@ def place_mark(row, column):
 		label['text'] = f'{PLAYER_O}\'s turn'
 		win_check()
 		if vs_ai and not game_over:
+			ai_thinking = True
 			root.after(600, ai_mode)
 			return
 	else:
@@ -146,7 +148,8 @@ def find_winning_move(player):
 def ai_mode():
 	global ai_thinking, current_player
 	
-	if game_over:
+	if game_over or current_player != PLAYER_O:
+		ai_thinking = False
 		return
 	
 	ai_thinking = True
@@ -175,27 +178,24 @@ def ai_mode():
 	current_player = PLAYER_X
 	label['text'] = f'{current_player}\'s turn'
 		
-	root.after(200, ai_thinking_false)
+	ai_thinking = False
 	
 	win_check()
 	
 
-#Setting AI thinking to false
-def ai_thinking_false():
-	global ai_thinking
-	ai_thinking = False
-	return
-	
-	
+#Restarting game
 def restart_game():
-	global ai_thinking, current_player, game_over, turns
-	
-	turns = 0
+	global ai_thinking, current_player, game_over
+
 	game_over = False
 	ai_thinking = False
 	current_player = PLAYER_X
 	
 	label.config(text=f'{current_player}\'s turn', fg='white')
+	if vs_ai and current_player == PLAYER_O:
+		ai_thinking = True
+		root.after(600, ai_mode)
+		
 	for row in range(3):
 		for column in range(3):
 			board[row][column].config(text='', bg=GRID_COLOR)
@@ -227,7 +227,7 @@ def difficulty_mode():
 	if vs_ai:
 		restart_game()
 
-#TKINTER SETUP
+#GUI SETUP
 root = tk.Tk()
 root.resizable(False, False)
 root.title('Tic Tac Toe')
@@ -238,7 +238,7 @@ frame.pack()
 
 #WIDGETS
 #Player's turn label
-label = tk.Label(frame,text=current_player+'\'s turn', fg='white', bg=BUTTON_COLOR, font=('consolas', 20, 'bold'))
+label = tk.Label(frame,text=current_player+'\'s turn', fg='white', bg=BUTTON_COLOR, font=LABEL_FONT)
 
 #Grid
 for row in range(3):
@@ -263,4 +263,3 @@ mode_button.grid(row=5, column=0, columnspan=3, sticky='ew')
 difficulty_button.grid(row=6, column=0, columnspan=3, sticky='ew')
 
 root.mainloop()
-
