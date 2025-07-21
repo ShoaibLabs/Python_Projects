@@ -1,105 +1,64 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import messagebox
 
-root = Tk()
-root.geometry("420x450")
+
+#CONSTANTS
+BACKGROUND_COLOR = '#121212'
+LABEL_FONT = ('Consolas', 60, 'bold')
+LABEL_BACKGROUND = '#1f1f1f'
+LABEL_FOREGROUND = '#00FF00'
+BUTTON_FONT = ('Consolas', 20, 'bold')
+BUTTON_BG_COLOR = '#131313'
+BUTTON_FG_COLOR = 'white'
+#VARIABLES
+count = 0
+
+
+#FUNCTIONS
+#Count +1
+def counter_button():
+	global count
+	
+	count += 1
+	
+	label['text'] = f'{count:05}'
+	
+	if count % 10000 == 0:
+		messagebox.showinfo(title='Counter', message='You have hit the limit')
+		reset_button()
+		return
+
+#Reseting the count
+def reset_button():
+	global count
+	
+	count = 0
+	
+	label['text'] = f'{count:05}'
+	
+	
+#GUI SETUPS
+root = tk.Tk()
 root.resizable(False, False)
 root.title('Counter')
 
-#VARIABLES
-bgclr = "#DFCFCF"
-count = 0
+#FRAME
+frame = tk.Frame(root, bg=BACKGROUND_COLOR)
 
-root.config(background=bgclr)
+#WIDGETS
+#Lable/Display
+label = tk.Label(frame, text=f'{count:05}', font=LABEL_FONT, bg=LABEL_BACKGROUND, fg=LABEL_FOREGROUND, width=6)
 
+#Increment counter
+increment_counter = tk.Button(frame, text='Count +1', font=BUTTON_FONT, bg=BUTTON_BG_COLOR, fg=BUTTON_FG_COLOR, command=counter_button)
 
-#FRAMES
-display_frame = Frame(root,
-                      bg = bgclr)
-display_frame.pack(pady = 1, padx = 1)
+#Increment reset
+increment_reset = tk.Button(frame, text='Reset', font=BUTTON_FONT, bg=BUTTON_BG_COLOR, fg=BUTTON_FG_COLOR, command=reset_button)
 
-button_frame = Frame(root,
-                     bg = bgclr)
-button_frame.pack(pady = 10)
-
-
-#DISPLAY
-display = Label(display_frame,
-                bg = '#1A1A1A',
-                width = 6,
-                text = f'{count}',
-                fg = '#00ff00',
-                font = ('Arial', 60, 'bold'),
-                relief = RAISED,
-                bd = 5,
-                padx = 15)
-display.pack()
-
-#FUNCTIONS
-
-
-def background_color():
-    '''
-    Light and Dark modes.
-    '''
-    global bgclr
-    if bgclr == '#DFCFCF':
-        bgclr = '#121212'
-        display_frame.config(bg = bgclr)
-        button_frame.config(bg = bgclr)
-        theme_button.config(bg = bgclr, fg = "#FFFFFF")
-        increment_button.config(bg = bgclr, fg = "#FFFFFF")
-        reset_button.config(bg = bgclr, fg = "#FFFFFF")
-        root.config(bg = bgclr)
-    else:
-        bgclr = '#DFCFCF'
-        display_frame.config(bg = bgclr)
-        button_frame.config(bg = bgclr)
-        theme_button.config(bg = bgclr, fg = "#000000")
-        increment_button.config(bg = bgclr, fg = "#000000")
-        reset_button.config(bg = bgclr, fg = "#000000")
-        root.config(bg = bgclr)
-
-
-def counter():
-    '''
-    Increment counter and update display.
-    '''
-    global count
-    count += 1
-    if count % 10000 == 0:
-        count = 0
-    display.config(text = f'{count}')
-
-
-def reset():
-    '''
-    Reset the display to 0
-    '''
-    global count
-    count = 0
-    display.config(text = f'{count}')
-
-# BUTTONS
-theme_button = Button(display_frame,
-               bg = bgclr,
-               text = "Theme",
-               command = background_color)
-theme_button.pack()
-
-increment_button = Button(button_frame,
-                        bg = bgclr,
-                        text = "Count +1",
-                        font = ('Comic Sans', 25),
-                        command = counter
-                        )
-increment_button.pack(pady = 50)
-
-reset_button = Button(button_frame,
-                      bg = bgclr,
-                      text = 'Reset',
-                      font = ('Comic Sans', 25),
-                      command = reset
-                      )
-reset_button.pack(pady = 5)
+#PLACING WIDGETS
+frame.pack()
+label.grid(row=0, column=0, columnspan=3, pady=15)
+increment_counter.grid(row=1, column=0, columnspan=3, pady=15)
+increment_reset.grid(row=2, column=0, columnspan=3, pady= 15)
 
 root.mainloop()
