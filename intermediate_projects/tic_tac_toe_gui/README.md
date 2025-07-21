@@ -32,10 +32,11 @@ python main.py
 ---
 
 ## 📁 Files:
-
+```
 tic_tac_toe/
 ├── main.py
 └── README.md
+```
 
 ---
 
